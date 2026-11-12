@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muhammad Waris | Full-Stack Web Developer</title>
+<meta name="description" content="Portfolio of Muhammad Waris, Full-Stack Web Developer and Computer Science graduate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  // Tailwind theme: fonts and brand colours
+  tailwind.config = { theme: { extend: {
+    fontFamily: { display: ['"Space Grotesk"', 'sans-serif'], body: ['Inter', 'sans-serif'] },
+    colors: { space: '#0a0a0f', neon: '#00f5d4', volt: '#7b2cbf' }
+  } } };
+</script>
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+  body { background: #0a0a0f; color: #d7d9e0; font-family: Inter, sans-serif; overflow-x: hidden; }
+  h1, h2, h3 { font-family: "Space Grotesk", sans-serif; }
+
+  /* Glassmorphism */
+  .glass { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+           -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-radius: 1.25rem; }
+  .glow-text { background: linear-gradient(90deg, #00f5d4, #7b2cbf); -webkit-background-clip: text;
+               background-clip: text; color: transparent; }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .8rem 1.6rem;
+         border-radius: 999px; font-weight: 600; font-size: .95rem; transition: box-shadow .3s, background .3s; will-change: transform; }
+  .btn-primary { background: linear-gradient(90deg, #00f5d4, #7b2cbf); color: #0a0a0f; box-shadow: 0 0 22px rgba(0,245,212,.35); }
+  .btn-primary:hover { box-shadow: 0 0 36px rgba(0,245,212,.6), 0 0 60px rgba(123,44,191,.4); }
+  .btn-glass { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.15); color: #fff;
+               -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+  .btn-glass:hover { border-color: #00f5d4; box-shadow: 0 0 18px rgba(0,245,212,.25); }
+  :focus-visible { outline: 2px solid #00f5d4; outline-offset: 3px; }
+
+  /* Hero name reveal */
+  .line { display: block; overflow: hidden; padding-bottom: .1em; }
+  .line > span { display: inline-block; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before { content: ""; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(#00f5d4, #7b2cbf); box-shadow: 0 0 12px #00f5d4; }
+  .dot { position: absolute; left: -2rem; top: 1.6rem; width: 16px; height: 16px; border-radius: 50%;
+         background: #0a0a0f; border: 2px solid #00f5d4; box-shadow: 0 0 12px #00f5d4; transition: background .3s; }
+  .tl-card:hover .dot { background: #00f5d4; }
+  .tl-card .more { max-height: 0; opacity: 0; overflow: hidden; transition: max-height .4s, opacity .4s; }
+  .tl-card.open .more { max-height: 12rem; opacity: 1; }
+  .tl-card .chev { transition: transform .3s; }
+  .tl-card.open .chev { transform: rotate(180deg); }
+
+  /* Project cards: 3D tilt + hover zoom */
+  .tilt { transform-style: preserve-3d; will-change: transform; transition: border-color .3s, box-shadow .3s; }
+  .tilt:hover { border-color: rgba(0,245,212,.5); box-shadow: 0 20px 50px -20px rgba(0,245,212,.35); }
+  .thumb { overflow: hidden; border-radius: 1rem; height: 9rem; }
+  .thumb > div { height: 100%; transition: transform .6s; }
+  .tilt:hover .thumb > div { transform: scale(1.12); }
+
+  /* Skill pills */
+  .pill { display: inline-block; padding: .35rem .85rem; border-radius: 999px; font-size: .85rem;
+          background: rgba(0,245,212,.07); border: 1px solid rgba(0,245,212,.25); color: #bffcf1; transition: .25s; }
+  .pill:hover { background: rgba(0,245,212,.18); box-shadow: 0 0 14px rgba(0,245,212,.5); transform: translateY(-2px); }
+  .pill.alt { background: rgba(123,44,191,.12); border-color: rgba(123,44,191,.5); color: #e5d3fb; }
+  .pill.alt:hover { background: rgba(123,44,191,.28); box-shadow: 0 0 14px rgba(123,44,191,.7); }
+
+  /* Form */
+  .field { width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); border-radius: .8rem;
+           padding: .8rem 1rem; color: #fff; transition: border-color .2s, box-shadow .2s; }
+  .field:focus { outline: none; border-color: #00f5d4; box-shadow: 0 0 0 3px rgba(0,245,212,.15); }
+  .field.invalid { border-color: #ff5c7a; }
+  .err { color: #ff8da1; font-size: .8rem; min-height: 1.1rem; margin-top: .25rem; }
+  .spin { width: 16px; height: 16px; border: 2px solid rgba(10,10,15,.3); border-top-color: #0a0a0f; border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  main, footer, header { position: relative; z-index: 10; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .tilt, .btn, .pill, .thumb > div { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Shared SVG icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-github" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+</svg>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<!-- ============ NAVBAR ============ -->
+<header id="nav" class="fixed top-0 inset-x-0 !fixed z-50">
+  <div class="glass !rounded-none !border-x-0 !border-t-0 border-white/10 backdrop-blur-md">
+    <nav class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between" aria-label="Main">
+      <a href="#about" class="font-display font-bold text-xl text-white">MW<span class="text-neon">.</span></a>
+      <ul class="hidden md:flex items-center gap-8 text-sm">
+        <li><a class="hover:text-neon transition-colors" href="#about">About</a></li>
+        <li><a class="hover:text-neon transition-colors" href="#experience">Experience</a></li>
+        <li><a class="hover:text-neon transition-colors" href="#projects">Projects</a></li>
+        <li><a class="hover:text-neon transition-colors" href="#education">Education</a></li>
+        <li><a class="hover:text-neon transition-colors" href="#contact">Contact</a></li>
+      </ul>
+      <!-- Put your resume PDF next to index.html and name it resume.pdf -->
+      <a href="resume.pdf" download class="btn btn-primary magnetic hidden md:inline-flex !py-2 !px-5 !text-sm">Download Resume</a>
+      <button id="burger" class="md:hidden p-2 text-white" aria-label="Open menu" aria-expanded="false" aria-controls="mobile">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path id="b-open" d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </nav>
+    <div id="mobile" class="md:hidden hidden px-5 pb-5">
+      <ul class="flex flex-col gap-1 text-base">
+        <li><a class="block py-2" href="#about">About</a></li>
+        <li><a class="block py-2" href="#experience">Experience</a></li>
+        <li><a class="block py-2" href="#projects">Projects</a></li>
+        <li><a class="block py-2" href="#education">Education</a></li>
+        <li><a class="block py-2" href="#contact">Contact</a></li>
+      </ul>
+      <a href="resume.pdf" download class="btn btn-primary w-full mt-3">Download Resume</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section id="about" class="min-h-screen flex items-center pt-24 pb-16">
+  <div class="max-w-6xl mx-auto px-5 w-full">
+    <div class="max-w-2xl">
+      <p class="hero-in text-neon font-medium mb-4">Hello, I’m</p>
+      <h1 class="text-5xl sm:text-7xl font-bold text-white leading-[1.05] mb-5" aria-label="Muhammad Waris">
+        <span class="line"><span class="hero-name">Muhammad</span></span>
+        <span class="line"><span class="hero-name glow-text">Waris</span></span>
+      </h1>
+      <h2 class="hero-in text-xl sm:text-2xl text-white/90 font-medium mb-5">Full-Stack Web Developer &amp; Computer Science Graduate</h2>
+      <p class="hero-in text-base sm:text-lg text-white/65 max-w-xl mb-8 leading-relaxed">
+        Passionate developer bridging creative front-end interfaces with robust backend logic. Specializing in modern web technologies and building scalable digital solutions.
+      </p>
+      <div class="hero-in flex flex-wrap gap-4 mb-8">
+        <a href="#projects" class="btn btn-primary magnetic">View Projects</a>
+        <a href="#contact" class="btn btn-glass magnetic">Contact Me</a>
+      </div>
+      <div class="hero-in flex gap-3">
+        <!-- Replace the # links with your real profile URLs -->
+        <a href="#" class="glass magnetic w-11 h-11 grid place-items-center hover:text-neon" aria-label="GitHub"><svg width="20" height="20"><use href="#i-github"/></svg></a>
+        <a href="#" class="glass magnetic w-11 h-11 grid place-items-center hover:text-neon" aria-label="LinkedIn"><svg width="20" height="20"><use href="#i-linkedin"/></svg></a>
+        <a href="#contact" class="glass magnetic w-11 h-11 grid place-items-center hover:text-neon" aria-label="Email"><svg width="20" height="20"><use href="#i-mail"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience" class="py-24">
+  <div class="max-w-3xl mx-auto px-5">
+    <h2 class="reveal text-3xl sm:text-4xl font-bold text-white mb-12">Experience</h2>
+    <div class="timeline space-y-6">
+
+      <article class="tl-card reveal glass p-6 relative cursor-pointer" tabindex="0" role="button" aria-expanded="false">
+        <span class="dot"></span>
+        <div class="flex justify-between items-start gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Customer Experience Management Engineer</h3>
+            <p class="text-neon text-sm mt-1">Telecommunications Provider · Corporate Contract</p>
+            <p class="text-white/50 text-sm">April 2026 – May 2026</p>
+          </div>
+          <svg class="chev shrink-0 text-white/60" width="22" height="22"><use href="#i-chev"/></svg>
+        </div>
+        <div class="more"><p class="text-white/70 mt-4 text-sm leading-relaxed">Managed customer experience workflows and technical service resolutions via PEO engagement.</p></div>
+      </article>
+
+      <article class="tl-card reveal glass p-6 relative cursor-pointer" tabindex="0" role="button" aria-expanded="false">
+        <span class="dot"></span>
+        <div class="flex justify-between items-start gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Laravel Developer Intern</h3>
+            <p class="text-neon text-sm mt-1">MeemSoft IT Services Provider</p>
+            <p class="text-white/50 text-sm">3-Month Internship</p>
+          </div>
+          <svg class="chev shrink-0 text-white/60" width="22" height="22"><use href="#i-chev"/></svg>
+        </div>
+        <div class="more"><p class="text-white/70 mt-4 text-sm leading-relaxed">Built and maintained backend server logic, relational databases, and front-end layouts using Laravel and PHP.</p></div>
+      </article>
+
+      <article class="tl-card reveal glass p-6 relative cursor-pointer" tabindex="0" role="button" aria-expanded="false">
+        <span class="dot"></span>
+        <div class="flex justify-between items-start gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-white">Computer Science Instructor</h3>
+            <p class="text-neon text-sm mt-1">High School / Institute</p>
+            <p class="text-white/50 text-sm">March 2026 – April 2026</p>
+          </div>
+          <svg class="chev shrink-0 text-white/60" width="22" height="22"><use href="#i-chev"/></svg>
+        </div>
+        <div class="more"><p class="text-white/70 mt-4 text-sm leading-relaxed">Instructed ninth-grade classes in core computer components, operational processes, application software, and fundamental programming principles.</p></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects" class="py-24">
+  <div class="max-w-6xl mx-auto px-5">
+    <h2 class="reveal text-3xl sm:text-4xl font-bold text-white mb-12">Featured Projects</h2>
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" style="perspective:1200px">
+
+      <article class="tilt reveal glass p-5 flex flex-col">
+        <div class="thumb mb-5"><div style="background:radial-gradient(circle at 30% 30%,#00f5d4 0,transparent 45%),linear-gradient(135deg,#12122a,#7b2cbf)"></div></div>
+        <h3 class="text-lg font-bold text-white mb-2">University Campus Network Topology</h3>
+        <p class="text-sm text-white/65 leading-relaxed mb-4">Designed and simulated a structured campus network infrastructure topology within the Cisco Packet Tracer ecosystem.</p>
+        <div class="flex flex-wrap gap-2 mb-6"><span class="pill">Cisco Packet Tracer</span><span class="pill">Network Architecture</span><span class="pill">Routing</span></div>
+        <div class="mt-auto flex gap-3"><a href="#" class="btn btn-primary !py-2 !px-4 !text-sm">Live Demo</a><a href="#" class="btn btn-glass !py-2 !px-4 !text-sm">GitHub Code</a></div>
+      </article>
+
+      <article class="tilt reveal glass p-5 flex flex-col">
+        <div class="thumb mb-5"><div style="background:radial-gradient(circle at 70% 30%,#7b2cbf 0,transparent 50%),linear-gradient(135deg,#0d2b2a,#12122a)"></div></div>
+        <h3 class="text-lg font-bold text-white mb-2">Laravel Dynamic Web Application</h3>
+        <p class="text-sm text-white/65 leading-relaxed mb-4">Developed full-stack backend server logic and MySQL database structures utilizing XAMPP local server environment.</p>
+        <div class="flex flex-wrap gap-2 mb-6"><span class="pill alt">PHP</span><span class="pill alt">Laravel</span><span class="pill alt">MySQL</span><span class="pill alt">Bootstrap</span><span class="pill alt">JavaScript</span></div>
+        <div class="mt-auto flex gap-3"><a href="#" class="btn btn-primary !py-2 !px-4 !text-sm">Live Demo</a><a href="#" class="btn btn-glass !py-2 !px-4 !text-sm">GitHub Code</a></div>
+      </article>
+
+      <article class="tilt reveal glass p-5 flex flex-col md:col-span-2 lg:col-span-1">
+        <div class="thumb mb-5"><div style="background:radial-gradient(circle at 50% 70%,#00f5d4 0,transparent 40%),linear-gradient(135deg,#7b2cbf,#0a0a0f)"></div></div>
+        <h3 class="text-lg font-bold text-white mb-2">Interactive Portfolio &amp; Scripting Suite</h3>
+        <p class="text-sm text-white/65 leading-relaxed mb-4">Designed responsive web pages and automated scripting workflows leveraging integrated developer tools.</p>
+        <div class="flex flex-wrap gap-2 mb-6"><span class="pill">HTML5</span><span class="pill">Tailwind CSS</span><span class="pill">JavaScript</span><span class="pill">Python</span></div>
+        <div class="mt-auto flex gap-3"><a href="#" class="btn btn-primary !py-2 !px-4 !text-sm">Live Demo</a><a href="#" class="btn btn-glass !py-2 !px-4 !text-sm">GitHub Code</a></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ EDUCATION & SKILLS (BENTO) ============ -->
+<section id="education" class="py-24">
+  <div class="max-w-6xl mx-auto px-5">
+    <h2 class="reveal text-3xl sm:text-4xl font-bold text-white mb-12">Education &amp; Skills</h2>
+    <div class="grid gap-5 grid-cols-1 md:grid-cols-6">
+
+      <div class="reveal glass p-7 md:col-span-4">
+        <h3 class="text-xl font-bold text-white">Master in Computer Science (MCS)</h3>
+        <p class="text-neon text-sm mt-1 mb-4">Gomal University</p>
+        <p class="text-white/65 text-sm leading-relaxed">Graduation curriculum covering core software programming, relational databases, and networks.</p>
+      </div>
+
+      <div class="reveal glass p-7 md:col-span-2">
+        <h3 class="text-lg font-bold text-white mb-4">Certifications</h3>
+        <ul class="space-y-3 text-sm text-white/70">
+          <li><span class="text-white">Cisco Networking Academy</span><br>Python, Networking, Cybersecurity</li>
+          <li><span class="text-white">DigiSkills.pk</span><br>WordPress</li>
+        </ul>
+      </div>
+
+      <div class="reveal glass p-6 md:col-span-2">
+        <h3 class="text-base font-bold text-white mb-4">Frontend</h3>
+        <div class="flex flex-wrap gap-2"><span class="pill">HTML</span><span class="pill">CSS</span><span class="pill">JavaScript</span><span class="pill">Bootstrap</span><span class="pill">jQuery</span></div>
+      </div>
+      <div class="reveal glass p-6 md:col-span-2">
+        <h3 class="text-base font-bold text-white mb-4">Backend &amp; Languages</h3>
+        <div class="flex flex-wrap gap-2"><span class="pill alt">PHP</span><span class="pill alt">Laravel</span><span class="pill alt">Python</span><span class="pill alt">SQL</span></div>
+      </div>
+      <div class="reveal glass p-6 md:col-span-2">
+        <h3 class="text-base font-bold text-white mb-4">Databases &amp; Tools</h3>
+        <div class="flex flex-wrap gap-2"><span class="pill">MySQL</span><span class="pill">XAMPP</span><span class="pill">Git</span><span class="pill">GitHub</span><span class="pill">Overleaf (LaTeX)</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="py-24">
+  <div class="max-w-5xl mx-auto px-5">
+    <div class="reveal glass p-6 sm:p-10 grid md:grid-cols-2 gap-10">
+      <div>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Let’s talk</h2>
+        <p class="text-white/65 mb-8 leading-relaxed">Have a role, a project, or a question? Send a message and I’ll get back to you.</p>
+        <p class="flex items-center gap-3 text-white/80 mb-8"><svg class="text-neon" width="20" height="20"><use href="#i-pin"/></svg>Dera Ismail Khan, Pakistan</p>
+        <div class="flex gap-3">
+          <a href="#" class="glass magnetic w-11 h-11 grid place-items-center hover:text-neon" aria-label="GitHub"><svg width="20" height="20"><use href="#i-github"/></svg></a>
+          <a href="#" class="glass magnetic w-11 h-11 grid place-items-center hover:text-neon" aria-label="LinkedIn"><svg width="20" height="20"><use href="#i-linkedin"/></svg></a>
+          <a href="#" class="glass magnetic w-11 h-11 grid place-items-center hover:text-neon" aria-label="Email"><svg width="20" height="20"><use href="#i-mail"/></svg></a>
+        </div>
+      </div>
+
+      <form id="form" novalidate class="space-y-4">
+        <div>
+          <label for="name" class="block text-sm mb-1.5 text-white/80">Name</label>
+          <input id="name" name="name" class="field" autocomplete="name" placeholder="Your name">
+          <p class="err" data-for="name"></p>
+        </div>
+        <div>
+          <label for="email" class="block text-sm mb-1.5 text-white/80">Email</label>
+          <input id="email" name="email" type="email" class="field" autocomplete="email" placeholder="you@example.com">
+          <p class="err" data-for="email"></p>
+        </div>
+        <div>
+          <label for="message" class="block text-sm mb-1.5 text-white/80">Message</label>
+          <textarea id="message" name="message" rows="4" class="field resize-none" placeholder="How can I help?"></textarea>
+          <p class="err" data-for="message"></p>
+        </div>
+        <button id="submit" type="submit" class="btn btn-primary magnetic w-full">Send message</button>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="py-8 text-center text-sm text-white/40">© <span id="year"></span> Muhammad Waris. Built with HTML, Tailwind CSS, GSAP and Three.js.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canHover = window.matchMedia('(hover: hover)').matches;
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- Mobile menu ---------- */
+  const burger = document.getElementById('burger'), mobile = document.getElementById('mobile');
+  const setMenu = open => {
+    mobile.classList.toggle('hidden', !open);
+    burger.setAttribute('aria-expanded', open);
+    document.getElementById('b-open').setAttribute('d', open ? 'M6 6l12 12M18 6L6 18' : 'M4 7h16M4 12h16M4 17h16');
+  };
+  burger.addEventListener('click', () => setMenu(mobile.classList.contains('hidden')));
+  mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+  /* ---------- Timeline cards: expand / collapse ---------- */
+  document.querySelectorAll('.tl-card').forEach(card => {
+    const toggle = () => { const o = card.classList.toggle('open'); card.setAttribute('aria-expanded', o); };
+    card.addEventListener('click', toggle);
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+  });
+  // Open the first card so the section does not look empty
+  document.querySelector('.tl-card').classList.add('open');
+
+  /* ---------- Three.js background ---------- */
+  const canvas = document.getElementById('bg');
+  let scene, camera, renderer, group, wire, core, stars;
+  const mouse = { x: 0, y: 0 }, target = { x: 0, y: 0 };
+  let scrollY = 0;
+
+  function initThree() {
+    if (!window.THREE) return;                          // fail quietly if CDN is blocked
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 100);
+    camera.position.z = 7;
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+    group = new THREE.Group();
+    wire = new THREE.Mesh(new THREE.IcosahedronGeometry(2.3, 1),
+      new THREE.MeshBasicMaterial({ color: 0x00f5d4, wireframe: true, transparent: true, opacity: 0.55 }));
+    core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.3, 0),
+      new THREE.MeshBasicMaterial({ color: 0x7b2cbf, wireframe: true, transparent: true, opacity: 0.9 }));
+    group.add(wire, core);
+
+    // Glowing particles scattered in a shell around the shape
+    const n = 900, pos = new Float32Array(n * 3), col = new Float32Array(n * 3);
+    const c1 = new THREE.Color(0x00f5d4), c2 = new THREE.Color(0x7b2cbf);
+    for (let i = 0; i < n; i++) {
+      const r = 3.5 + Math.random() * 7, th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+      pos.set([r * Math.sin(ph) * Math.cos(th), r * Math.sin(ph) * Math.sin(th), r * Math.cos(ph)], i * 3);
+      const c = Math.random() > 0.5 ? c1 : c2; col.set([c.r, c.g, c.b], i * 3);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    stars = new THREE.Points(g, new THREE.PointsMaterial({ size: 0.045, vertexColors: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false }));
+    scene.add(group, stars);
+    resize();
+    renderer.setAnimationLoop(tick);
+  }
+
+  function resize() {
+    if (!renderer) return;
+    renderer.setSize(innerWidth, innerHeight, false);
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+    const wide = innerWidth >= 900;
+    group.position.x = wide ? 2.6 : 0;                  // shape sits right of the text on desktop
+    group.scale.setScalar(wide ? 1 : 0.75);
+  }
+
+  function tick(t) {
+    const time = t * 0.001 * (reduce ? 0.2 : 1);
+    mouse.x += (target.x - mouse.x) * 0.05;             // smooth easing toward the pointer
+    mouse.y += (target.y - mouse.y) * 0.05;
+    wire.rotation.x = time * 0.15; wire.rotation.y = time * 0.2;
+    core.rotation.x = -time * 0.3; core.rotation.y = -time * 0.25;
+    group.rotation.y = mouse.x * 0.6 + scrollY * 0.0012;
+    group.rotation.x = mouse.y * 0.4;
+    group.position.y = scrollY * 0.0015;                // subtle parallax on scroll
+    stars.rotation.y = time * 0.03 + scrollY * 0.0004;
+    stars.rotation.x = mouse.y * 0.1;
+    renderer.render(scene, camera);
+  }
+
+  addEventListener('resize', resize);
+  addEventListener('pointermove', e => { target.x = (e.clientX / innerWidth - 0.5) * 2; target.y = (e.clientY / innerHeight - 0.5) * 2; });
+  addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+  initThree();
+
+  /* ---------- GSAP animations ---------- */
+  if (window.gsap && window.ScrollTrigger && !reduce) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero intro: name slides up from a mask, then supporting text fades in
+    gsap.timeline({ defaults: { ease: 'power4.out' } })
+      .from('.hero-name', { yPercent: 110, duration: 1.1, stagger: 0.12 })
+      .from('.hero-in', { y: 24, opacity: 0, duration: 0.8, stagger: 0.1 }, '-=0.6');
+
+    // Staggered reveals as elements enter the viewport
+    ScrollTrigger.batch('.reveal', {
+      start: 'top 88%', once: true,
+      onEnter: els => gsap.from(els, { y: 40, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out', clearProps: 'opacity,y' })
+    });
+  }
+
+  /* ---------- Magnetic buttons ---------- */
+  if (window.gsap && canHover && !reduce) {
+    document.querySelectorAll('.magnetic').forEach(el => {
+      el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        gsap.to(el, { x: (e.clientX - r.left - r.width / 2) * 0.3, y: (e.clientY - r.top - r.height / 2) * 0.4, duration: 0.3 });
+      });
+      el.addEventListener('mouseleave', () => gsap.to(el, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1,0.4)' }));
+    });
+
+    /* ---------- 3D tilt on project cards ---------- */
+    document.querySelectorAll('.tilt').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+        gsap.to(card, { rotateY: px * 14, rotateX: -py * 14, transformPerspective: 900, duration: 0.4, ease: 'power2.out' });
+      });
+      card.addEventListener('mouseleave', () => gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.7, ease: 'power3.out' }));
+    });
+  }
+
+  /* ---------- Contact form: validation + submit animation ---------- */
+  const form = document.getElementById('form'), btn = document.getElementById('submit');
+  const rules = {
+    name:    v => v.trim().length >= 2 ? '' : 'Enter your name (at least 2 characters).',
+    email:   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Enter a valid email address.',
+    message: v => v.trim().length >= 10 ? '' : 'Write at least 10 characters.'
+  };
+  const check = id => {
+    const input = form.elements[id], msg = rules[id](input.value);
+    input.classList.toggle('invalid', !!msg);
+    form.querySelector('[data-for="' + id + '"]').textContent = msg;
+    return !msg;
+  };
+  Object.keys(rules).forEach(id => form.elements[id].addEventListener('input', () => check(id)));
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const ok = Object.keys(rules).map(check).every(Boolean);
+    if (!ok) { if (window.gsap && !reduce) gsap.fromTo(form, { x: -6 }, { x: 0, duration: 0.5, ease: 'elastic.out(1,0.3)' }); return; }
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin"></span> Sending';
+    // DEMO ONLY: replace this timeout with a real request (e.g. fetch to Formspree or your own backend)
+    setTimeout(() => {
+      btn.innerHTML = 'Message sent';
+      form.reset();
+      setTimeout(() => { btn.disabled = false; btn.textContent = 'Send message'; }, 2500);
+    }, 1400);
+  });
+})();
+</script>
+</body>
+</html>
